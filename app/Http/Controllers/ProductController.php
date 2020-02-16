@@ -2,17 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Crawler\FabelioController;
+use App\Http\Controllers\Crawler\TokopediaController;
 use App\Interfaces\ProductInterface;
+use App\Interfaces\ProductPhotoInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
     private $product;
+    private $productPhoto;
 
-    public function __construct(ProductInterface $product)
+    public function __construct(ProductInterface $product, ProductPhotoInterface $productPhoto)
     {
         $this->product = $product;
+        $this->productPhoto = $productPhoto;
     }
 
     public function create(Request $request)
@@ -30,7 +36,40 @@ class ProductController extends Controller
         }
 
         try{
+            DB::beginTransaction();
+
+            $crawler = new CrawlerController;
+            $crawling = $crawler->initiate($request->link);
+
+            //GET DATA
+            $content = $crawling->getContent($request->link);
+            $name = $crawling->getName($content);
+            $description = $crawling->getDescription($content);
+            $photos = $crawling->getPhoto($content);
+
+            if(empty($name)) {
+                DB::rollback();
+                return response([
+                    "error" => true
+                    , "message" => 'Invalid product url'
+                ],'400');
+            }
+
+            //SET PARAMETER CREATE
+            $request->name = $name;
+            $request->description = $description;
             $product = $this->product->create($request);
+
+            //CREATE PHOTO OF PRODUCT
+            foreach ($photos as $photo) {
+                $photo_params = new \stdClass();
+                $photo_params->product_id = $product->id;
+                $photo_params->photo_url = $photo;
+                $this->productPhoto->create($photo_params);
+            }
+
+            DB::commit();
+
             return response([
                 "error" => false
                 , "data" => $product

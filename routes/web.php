@@ -18,7 +18,7 @@ Route::get('/welcome', function () {
 
 
 //nanti akan diganti oleh worker
-Route::get('/crawler', 'CrawlerController@getCurrentPrice');
+Route::get('/crawler', 'ProductPriceHistoryController@create');
 Route::get('/crawler2/{id}', 'CrawlerController@getName');
 Route::get('/crawler3/{id}', 'CrawlerController@getDescription');
 Route::get('/crawler4/{id}', 'CrawlerController@getPhoto');

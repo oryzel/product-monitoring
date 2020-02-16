@@ -9,13 +9,39 @@ use Illuminate\Support\Facades\Validator;
 
 class ProductPriceHistoryController extends Controller
 {
+    private $product;
     private $product_price_history;
 
-    public function __construct(ProductPriceHistoryInterface $product_price_history)
+    public function __construct(ProductInterface $product, ProductPriceHistoryInterface $product_price_history)
     {
+        $this->product = $product;
         $this->product_price_history = $product_price_history;
     }
 
+    public function create() {
+
+        $result = [];
+        $products = $this->product->getList();
+        foreach ($products as $product) {
+
+            $crawler = new CrawlerController;
+            $crawling = $crawler->initiate($product->link);
+
+            //GET DATA
+            $content = $crawling->getContent($product->link);
+            $price = $crawling->getCurrentPrice($content);
+
+            $params = new \stdClass();
+            $params->product_id = $product->id;
+            $params->price = $price;
+            array_push($result, $this->product_price_history->create($params));
+        }
+
+        return response([
+            "error" => false
+            , "data" => $result
+        ],'200');
+    }
 
     public function getList($product_id) {
 

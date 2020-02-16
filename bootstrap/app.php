@@ -41,10 +41,6 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
-//$app->register(
-//    $app->bind('App\Interfaces\ProductInterface','App\Repositories\ProductRepository')
-//);
-
 /*
 |--------------------------------------------------------------------------
 | Return The Application
