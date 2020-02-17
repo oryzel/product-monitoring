@@ -45,7 +45,12 @@ class ProductRepository implements ProductInterface
         return $model;
     }
 
-    public function getList($limit) {
+    public function getList() {
+        return Product::where('is_deleted', false)
+            ->get();
+    }
+
+    public function getPagination($limit) {
         return Product::where('is_deleted', false)
             ->paginate($limit ?? 5);
     }

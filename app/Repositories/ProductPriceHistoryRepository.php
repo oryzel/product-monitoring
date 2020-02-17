@@ -32,5 +32,11 @@ class ProductPriceHistoryRepository implements ProductPriceHistoryInterface
             ->paginate(30);
     }
 
+    public function getChart($product_id) {
+        return ProductPriceHistory::where('product_id', (int) $product_id)
+            ->where('is_deleted', false)
+            ->get();
+    }
+
 
 }

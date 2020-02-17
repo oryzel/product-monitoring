@@ -13,7 +13,8 @@ interface ProductInterface
 {
 
     public function create($params);
-    public function getList($limit);
+    public function getList();
+    public function getPagination($limit);
     public function getById($params);
 
 }

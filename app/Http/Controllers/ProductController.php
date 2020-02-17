@@ -6,6 +6,7 @@ use App\Http\Controllers\Crawler\FabelioController;
 use App\Http\Controllers\Crawler\TokopediaController;
 use App\Interfaces\ProductInterface;
 use App\Interfaces\ProductPhotoInterface;
+use App\Transformers\ProductTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -89,11 +90,9 @@ class ProductController extends Controller
 
 
         try{
-            $product = $this->product->getList($request->limit);
-            return response([
-                "error" => false
-                , "data" => $product
-            ],'200');
+            $product = $this->product->getPagination($request->limit);
+            $transform = (new ProductTransformer())->transformPagination($product);
+            return response($transform,'200');
 
         }
         catch (\Exception $ex) {

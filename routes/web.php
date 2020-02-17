@@ -16,16 +16,13 @@ Route::get('/welcome', function () {
 });
 
 
-
-//nanti akan diganti oleh worker
-Route::get('/crawler', 'ProductPriceHistoryController@create');
-Route::get('/crawler2/{id}', 'CrawlerController@getName');
-Route::get('/crawler3/{id}', 'CrawlerController@getDescription');
-Route::get('/crawler4/{id}', 'CrawlerController@getPhoto');
+//endpoint for get price manually
+Route::get('/crawler-price', 'ProductPriceHistoryController@create');
 
 Route::get('/', 'ProductController@getList');
 Route::get('/{id}', 'ProductController@get');
 Route::post('/', 'ProductController@create');
 
 Route::get('/{id}/history', 'ProductPriceHistoryController@getList');
+Route::get('/{id}/history-chart', 'ProductPriceHistoryController@getChart');
 Route::get('/{id}/photo', 'ProductPhotoController@getList');
