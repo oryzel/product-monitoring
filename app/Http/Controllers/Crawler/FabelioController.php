@@ -3,10 +3,6 @@
 namespace App\Http\Controllers\Crawler;
 
 use App\Interfaces\CrawlerInterface;
-use App\Interfaces\ProductInterface;
-use App\Interfaces\ProductPhotoInterface;
-use App\Interfaces\ProductPriceHistoryInterface;
-use Illuminate\Http\Request;
 use Symfony\Component\DomCrawler\Crawler;
 
 class FabelioController implements CrawlerInterface
@@ -36,7 +32,7 @@ class FabelioController implements CrawlerInterface
             {
                 $price = explode("Rp ", $content->nodeValue);
                 $price = str_replace('.','', $price[1]);
-                return $price;
+                return (double) $price;
             }
 
         }
@@ -66,10 +62,7 @@ class FabelioController implements CrawlerInterface
     {
 
         $crawler = new Crawler($content);
-
         $filter = $crawler->filter('#description > p');
-
-
         if(count($filter) > 0)
         {
             foreach ($filter as $i => $content)
@@ -91,7 +84,6 @@ class FabelioController implements CrawlerInterface
         $filter = $crawler
             ->filterXpath('//img')
             ->extract(array('src'));
-
 
         $searchword = "m2fabelio.imgix.net";
         $images = array_filter($filter, function ($var) use ($searchword) {
