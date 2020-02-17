@@ -22,10 +22,18 @@ class ProductPhotoController extends Controller
 
         try{
             $product_photo = $this->product_photo->getList($product_id);
-            return response([
-                "error" => false
-                , "data" => $product_photo
-            ],'200');
+            if(sizeof($product_photo) > 0) {
+                return response([
+                    "error" => false
+                    , "data" => $product_photo
+                ],'200');
+            }
+            else{
+                return response([
+                    "error" => false
+                    , "data" =>[]
+                ],'404');
+            }
 
         }
         catch (\Exception $ex) {

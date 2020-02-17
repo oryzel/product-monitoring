@@ -47,10 +47,18 @@ class ProductPriceHistoryController extends Controller
 
         try{
             $product_price_history = $this->product_price_history->getList($product_id);
-            return response([
-                "error" => false
-                , $product_price_history
-            ],'200');
+            if(sizeof($product_price_history) > 0) {
+                return response([
+                    "error" => false
+                    , "data" => $product_price_history
+                ],'200');
+            }
+            else{
+                return response([
+                    "error" => false
+                    , "data" =>[]
+                ],'404');
+            }
 
         }
         catch (\Exception $ex) {

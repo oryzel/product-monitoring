@@ -27,7 +27,7 @@ class ProductPriceHistoryRepository implements ProductPriceHistoryInterface
     }
 
     public function getList($product_id) {
-        return ProductPriceHistory::where('product_id', $product_id)
+        return ProductPriceHistory::where('product_id', (int) $product_id)
             ->where('is_deleted', false)
             ->paginate(30);
     }

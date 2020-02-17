@@ -26,7 +26,7 @@ class ProductPhotoRepository implements ProductPhotoInterface
     }
 
     public function getList($product_id) {
-        return ProductPhoto::where('product_id', $product_id)
+        return ProductPhoto::where('product_id', (int) $product_id)
             ->where('is_deleted', false)
             ->get();
     }

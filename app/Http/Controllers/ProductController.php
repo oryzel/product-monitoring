@@ -87,8 +87,9 @@ class ProductController extends Controller
 
     public function getList(Request $request) {
 
+
         try{
-            $product = $this->product->getList();
+            $product = $this->product->getList($request->limit);
             return response([
                 "error" => false
                 , $product
@@ -108,10 +109,18 @@ class ProductController extends Controller
 
         try{
             $product = $this->product->getById($id);
-            return response([
-                "error" => false
-                , "data" => $product
-            ],'200');
+            if($product) {
+                return response([
+                    "error" => false
+                    , "data" => $product
+                ],'200');
+            }
+            else{
+                return response([
+                    "error" => false
+                    , "data" => new \stdClass()
+                ],'404');
+            }
 
         }
         catch (\Exception $ex) {
@@ -122,4 +131,5 @@ class ProductController extends Controller
 
         }
     }
+
 }
