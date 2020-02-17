@@ -92,7 +92,7 @@ class ProductController extends Controller
             $product = $this->product->getList($request->limit);
             return response([
                 "error" => false
-                , $product
+                , "data" => $product
             ],'200');
 
         }
