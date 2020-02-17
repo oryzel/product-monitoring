@@ -1,5 +1,4 @@
 .env
 /vendor
-/storage
 /.idea
 /.vscode
