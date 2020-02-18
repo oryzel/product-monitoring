@@ -15,14 +15,29 @@ Route::get('/welcome', function () {
     return view('welcome');
 });
 
+Route::get('/', function () {
+    return view('submit');
+});
 
-//endpoint for get price manually
-Route::get('/crawler-price', 'ProductPriceHistoryController@create');
+Route::get('/list-product', function () {
+    return view('list-product');
+});
 
-Route::get('/', 'ProductController@getList');
-Route::get('/{id}', 'ProductController@get');
-Route::post('/', 'ProductController@create');
+Route::get('/product-history/{id}', function () {
+    return view('product-history');
+});
 
-Route::get('/{id}/history', 'ProductPriceHistoryController@getList');
-Route::get('/{id}/history-chart', 'ProductPriceHistoryController@getChart');
-Route::get('/{id}/photo', 'ProductPhotoController@getList');
+Route::group(['prefix' => 'api', 'as' => 'api'], function () {
+
+    Route::get('/', 'ProductController@getList');
+    Route::get('/{id}', 'ProductController@get');
+    Route::post('/', 'ProductController@create');
+
+    Route::get('/{id}/history', 'ProductPriceHistoryController@getList');
+    Route::get('/{id}/history-chart', 'ProductPriceHistoryController@getChart');
+    Route::get('/{id}/photo', 'ProductPhotoController@getList');
+});
+
+Route::prefix('/crawler')->group(function () {
+    Route::get('/price', 'ProductPriceHistoryController@create');
+});

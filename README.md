@@ -1,58 +1,64 @@
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+# product-monitoring
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+## Description
+This is simple project using laravel to crawling and scrapping website to monitoring product price.
 
-## About Laravel
+### How To Run This Project
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+> Make sure you already install mysql in your machine.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+> Make sure you already install php in your machine (make sure your php minimum version is 7.0),
+for easy to use i recommend you to install xampp through this link https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/7.0.27/ 
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications.
+> Make sure you already install composer in your machine,
+  if you don't have composer in your machine you can install through this link https://getcomposer.org/download/
 
-## Learning Laravel
+##### Check php already installed on your machine
+```bash
+$ php -v
+PHP 7.0.18 (cli) (built: Apr 11 2017 16:35:18) ( ZTS )
+Copyright (c) 1997-2017 The PHP Group
+Zend Engine v3.0.0, Copyright (c) 1998-2017 Zend Technologies
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of any modern web application framework, making it a breeze to get started learning the framework.
+##### Check composer already installed on your machine
+```bash
+$ composer --version
+Composer version 1.8.4 2019-02-11 10:52:10
+```
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 1100 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+Since the project using xampp, I recommend to put the source code inside htdocs folder.
+Clone this repository into your htdocs folder
 
-## Laravel Sponsors
+##### clone project inside htdocs folder
+```bash
+$ cd /your-xampp-path/htdocs
+$ git clone https://github.com/oryzel/product-monitoring.git
+```
 
-We would like to extend our thanks to the following sponsors for helping fund on-going Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell):
+>you must copy env.example to .env (for development or production) and .env.testing (for running unit test) for database value appropriate to your database on machine
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Pulse Storm](http://www.pulsestorm.net/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
+##### after that you must run composer to install all dependency
+```bash
+$  cd /your-xampp-path/htdocs/product-monitoring
+$  composer install
+```
 
-## Contributing
+##### to install create table and default value in database you can run this script
+```bash
+$  cd /your-xampp-path/htdocs/product-monitoring
+$  php artisan migrate:refresh --seed
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+##### When using the scheduler for scrapping price, you only need to add the following Cron entry to your machine
+```bash
+$  * * * * * cd /your-xampp-path/htdocs/product-monitoring && php artisan schedule:run >> /dev/null 2>&1
+```
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### How To run unit test
+##### Make sure you already all the process before then run this script.
+```bash
+$  cd /your-xampp-path/htdocs/product-monitoring
+$  ./vendor/bin/phpunit
+```

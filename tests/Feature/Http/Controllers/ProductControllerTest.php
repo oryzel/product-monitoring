@@ -35,7 +35,7 @@ class ProductControllerTest extends TestCase
 
         $data = [	"link" => "https://fabelio.com/ip/leroy-high-sideboards-kit.html"];
 
-        $response = $this->post('/', $data);
+        $response = $this->post('/api/', $data);
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'data' =>[
@@ -52,7 +52,7 @@ class ProductControllerTest extends TestCase
     {
 
         $data = [	"link" => "https://google.com"];
-        $response = $this->post('/', $data);
+        $response = $this->post('/api/', $data);
         $response->assertStatus(400);
 
     }
@@ -60,7 +60,7 @@ class ProductControllerTest extends TestCase
     public function getListSuccess()
     {
 
-        $response = $this->get('/');
+        $response = $this->get('/api/');
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'data' => [
@@ -79,7 +79,7 @@ class ProductControllerTest extends TestCase
 
     public function testGetSuccess()
     {
-        $response = $this->get('/1');
+        $response = $this->get('/api/1');
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'data' => [

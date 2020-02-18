@@ -88,7 +88,6 @@ class ProductController extends Controller
 
     public function getList(Request $request) {
 
-
         try{
             $product = $this->product->getPagination($request->limit);
             $transform = (new ProductTransformer())->transformPagination($product);
