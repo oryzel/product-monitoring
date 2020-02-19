@@ -45,6 +45,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h2>List Product Saved</h2>
+                        <button onclick="window.location.href = $(this).data('href');" data-href="{{URL::to('')}}" class="btn" style="position: absolute; margin: 15px;top:0; right: 0">Back</button>
                         <table style="background-color: #fff;" id="list-link" class="display responsive nowarp table main-table" cellspacing="0" width="100%"></table>
                     </div>
                 </div>

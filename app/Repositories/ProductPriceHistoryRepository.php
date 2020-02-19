@@ -35,6 +35,7 @@ class ProductPriceHistoryRepository implements ProductPriceHistoryInterface
     public function getChart($product_id) {
         return ProductPriceHistory::where('product_id', (int) $product_id)
             ->where('is_deleted', false)
+            ->orderBy('created_at', 'ASC')
             ->get();
     }
 

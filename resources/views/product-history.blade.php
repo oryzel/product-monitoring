@@ -41,7 +41,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <h2>Monitoring Chart</h2>
+                        <h2 id="monitoring-chart">Monitoring Chart</h2>
+                        <button onclick="window.location.href = $(this).data('href');" data-href="{{URL::to('/list-product')}}" class="btn" style="position: absolute; margin: 15px;top:0; right: 0">Back</button>
                         <div id="chart" style="box-shadow: 0 2px 8px rgba(0,0,0,.12);" ></div>
                         <br/>
                         <h4>Gallery</h4>
@@ -139,6 +140,19 @@
                             '<img style="max-width: 100px;margin: 10px;box-shadow: 0 2px 8px rgba(0,0,0,.12);" src='+e.photo_url+' alt='+e.photo_url+' >'
                         )
                     })
+                }
+            },
+            error: function() {
+                console.log('error')
+            }
+        });
+        $.ajax({
+            type: "GET",
+            url: `{{ env('BASE_URL') }}/api/${'{{request()->route('id')}}'}`,
+            contentType: 'application/json',
+            success: function(result) {
+                if(result != null){
+                    $('#monitoring-chart').html(result.data.name)
                 }
             },
             error: function() {
