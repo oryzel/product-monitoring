@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Crawler\FabelioController;
-use App\Http\Controllers\Crawler\TokopediaController;
 use App\Interfaces\ProductInterface;
 use App\Interfaces\ProductPhotoInterface;
 use App\Transformers\ProductTransformer;
@@ -14,12 +12,12 @@ use Illuminate\Support\Facades\Validator;
 class ProductController extends Controller
 {
     private $product;
-    private $productPhoto;
+    private $product_photo;
 
-    public function __construct(ProductInterface $product, ProductPhotoInterface $productPhoto)
+    public function __construct(ProductInterface $product, ProductPhotoInterface $product_photo)
     {
         $this->product = $product;
-        $this->productPhoto = $productPhoto;
+        $this->product_photo = $product_photo;
     }
 
     public function create(Request $request)
@@ -62,12 +60,12 @@ class ProductController extends Controller
             $product = $this->product->create($request);
 
             //CREATE PHOTO OF PRODUCT
-            foreach ($photos as $photo) {
-                $photo_params = new \stdClass();
-                $photo_params->product_id = $product->id;
-                $photo_params->photo_url = $photo;
-                $this->productPhoto->create($photo_params);
-            }
+            $request_photo = new Request();
+            $request_photo->replace([
+                "product_id" => $product->id,
+                "photos" => $photos ?? []
+            ]);
+            app('App\Http\Controllers\ProductPhotoController')->create($request_photo);
 
             DB::commit();
 

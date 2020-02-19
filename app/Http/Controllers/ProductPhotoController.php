@@ -18,6 +18,41 @@ class ProductPhotoController extends Controller
     }
 
 
+    public function create(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'product_id' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response([
+                "error" => true
+                ,"message" => implode($validator->errors()->all(), " | ")
+            ],'400');
+        }
+
+        $product_photo = [];
+        try{
+            foreach ($request->photos as $photo) {
+                $photo_params = new \stdClass();
+                $photo_params->product_id = $request->product_id;
+                $photo_params->photo_url = $photo;
+                array_push($product_photo, $this->product_photo->create($photo_params));
+            }
+
+            return response([
+                "error" => false
+                , "data" => $product_photo
+            ],'200');
+        }
+        catch (\Exception $ex) {
+            return response([
+                "error" => true
+                ,"message" => $ex->getMessage()
+            ],'500');
+
+        }
+    }
     public function getList($product_id) {
 
         try{

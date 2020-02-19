@@ -20,7 +20,7 @@ class ProductPriceHistoryTransformer
 
             array_push($result, [
                 (Carbon::parse($value->created_at)->timestamp),
-                $value->price,
+                (double) $value->price,
             ]);
         }
         return $result;
